@@ -10,15 +10,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-#### Creating Data Files ####################################################################
-#
-# Use shared queries in Jira to export Excel (CSV) files. Note: Jira only exports
-#  1,000 rows at a time. At the time of this script it required three batches.
-# Place all raw .csv files into the folder called raw_data. The script will read
-# any/all .csv files in the directory and stitch them together.
-# Explore Jira/Python plugins if you want to automate this step
-#
-##############################################################################################
 pd.set_option('display.max_columns', None)
 
 def read_and_combine_csv():
@@ -55,7 +46,6 @@ raw = read_and_combine_csv()
 raw['updated'] = pd.to_datetime(raw['Updated'], errors='coerce')
 raw['created'] = pd.to_datetime(raw['Created'], errors='coerce')
 raw['resolved'] = pd.to_datetime(raw['Resolved'], errors='coerce')
-#raw['resolved'] = raw.fillna(0, inplace=True)  #GPI does not set resolved for any issues
 raw['cycle_time'] = raw.apply(calc_cycle_time, axis=1)
 #raw['cycle_time'] = (raw['resolved'] - raw['created']).dt.days #if resolved is set consistently this calc can be used
 colnames = {'Summary':'summary','Project name':'project_name','Custom field (Story Points)':'story_points','Description':'description'}
@@ -198,4 +188,4 @@ for project in projects:
         file.write(f'Descriptions\n{d.describe().to_string()}\n\n')
     
 
-#    plt.show()
+    plt.show()
